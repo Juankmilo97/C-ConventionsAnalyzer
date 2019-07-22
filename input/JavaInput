@@ -1,0 +1,34 @@
+package blue.Red.green;
+import org.nntlr.v4.runtime.Token;
+
+
+class cont3extana3lyzer
+{
+	public static void main(String carls[])
+	{
+	  int a = 4;
+	  string foo = "Hello world!";
+	  go();
+
+	}
+	public static void go()
+    {	int x = 3;
+    	int y = 2;
+    	System.out.println("In method go. x: " + x + " y: " + y);
+    	falseSwap(x,y);
+    	System.out.println("in method go. x: " + x + " y: " + y);
+    	moreParameters(x,y);
+    	System.out.println("in method go. x: " + x + " y: " + y);
+    }
+}
+
+class unicode
+{
+  public static void main(String[] args)
+  {
+    System.out.println("A = \uuu0041");
+    int variable;
+    int otraVariable;
+
+    }
+}

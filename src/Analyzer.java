@@ -4,10 +4,37 @@ import org.antlr.v4.runtime.tree.*;
 
 public class Analyzer {
     public static void main(String[] args) throws Exception {
-        try{
+
+    int selector = 0; //selector = 0 --> Java || selector = 1 --> C++
+
+    if(selector == 0) {
+
+        try {
+            Java8Lexer lexer;
+            if (args.length > 0) {
+                lexer = new Java8Lexer(CharStreams.fromFileName(args[0]));
+            } else {
+                lexer = new Java8Lexer(CharStreams.fromStream(System.in));
+            }
+
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+            Java8Parser parser = new Java8Parser(tokens);
+
+            ParseTree tree = parser.compilationUnit();
+            ParseTreeWalker walker = new ParseTreeWalker();
+            walker.walk(new JavaListener(), tree);
+
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+
+        }
+    }else if(selector == 1){
+        try {
             // crear un analizador léxico que se alimenta a partir de la entrada (archivo  o consola)
             CPP14Lexer lexer;
-            if (args.length>0)
+            if (args.length > 0)
                 lexer = new CPP14Lexer(CharStreams.fromFileName(args[0]));
             else
                 lexer = new CPP14Lexer(CharStreams.fromStream(System.in));
@@ -25,8 +52,9 @@ public class Analyzer {
             walker.walk(new CPPListener(), tree);
             System.out.println(); // print a \n after translation
 
-        } catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Error (Test): " + e);
         }
     }
+  }
 }

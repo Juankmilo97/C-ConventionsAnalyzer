@@ -4,16 +4,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class JavaListener extends Java8BaseListener {
+
     Pattern camelCase = Pattern.compile("^[A-Z][a-zA-Z0-9]*");
     Pattern hasNumber = Pattern.compile("[0-9]+");
-    public void sugerencirNombreClaseInterface(String id,int line, int column){
+
+    public void sugerencirNombreClaseInterface(String id,int line, int column) {
+
         Matcher camelMatcher = camelCase.matcher(id);
         Matcher numberMatcher = hasNumber.matcher(id);
+
         if (!camelMatcher.matches()||numberMatcher.matches()){
             Character ch = id.charAt(0);
             String newNameClass = Character.toUpperCase(ch)+ id.substring(1);
             newNameClass = newNameClass.replaceAll("[0-9]","");
-            System.out.printf("<%d,%d> Se sugiere cambiar el nombre de la clase %s por %s \n",line,column,id,newNameClass);
+            System.out.printf("<%d,%d>  %s por %s \n",line,column,id,newNameClass);
         }
 
     }
@@ -21,7 +25,7 @@ public class JavaListener extends Java8BaseListener {
     /**
      * verificar que el nombre de la clase siga una
      * nomenclatura CamelCase y no tenga numeros en su nombre
-     */
+    **/
 
     @Override
     public void enterClassDeclaration(Java8Parser.ClassDeclarationContext ctx) {
