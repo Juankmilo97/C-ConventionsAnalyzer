@@ -22,7 +22,7 @@ public class Analyzer {
             ParseTreeWalker walker = new ParseTreeWalker();
             // Walk the tree created during the parse, trigger callbacks
 
-            walker.walk(new MyListener(), tree);
+            walker.walk(new CPPListener(), tree);
             System.out.println(); // print a \n after translation
 
         } catch (Exception e){

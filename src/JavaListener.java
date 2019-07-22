@@ -3,9 +3,7 @@ import org.antlr.v4.runtime.Token;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-public class MyListener extends CPP14BaseListener {
-
+public class JavaListener extends Java8BaseListener {
     Pattern camelCase = Pattern.compile("^[A-Z][a-zA-Z0-9]*");
     Pattern hasNumber = Pattern.compile("[0-9]+");
     public void sugerencirNombreClaseInterface(String id,int line, int column){
@@ -26,10 +24,10 @@ public class MyListener extends CPP14BaseListener {
      */
 
     @Override
-    public void enterDeclaration(CPP14Parser.DeclarationContext ctx) {
-        int column = (ctx.blockdeclaration().simpledeclaration().Identifier().getSymbol().getCharPositionInLine()+1);
-        int line = (ctx.blockdeclaration().simpledeclaration().Identifier().getSymbol().getLine());
-        String id = ctx.blockdeclaration().simpledeclaration().Identifier().toString();
+    public void enterClassDeclaration(Java8Parser.ClassDeclarationContext ctx) {
+        int column = (ctx.normalClassDeclaration().Identifier().getSymbol().getCharPositionInLine()+1);
+        int line = (ctx.normalClassDeclaration().Identifier().getSymbol().getLine());
+        String id = ctx.normalClassDeclaration().Identifier().toString();
         sugerencirNombreClaseInterface(id,line,column);
 
 
@@ -40,7 +38,7 @@ public class MyListener extends CPP14BaseListener {
      */
 
     @Override
-    public void enterInterfaceDeclaration(CPP14Parser.InterfaceDeclarationContext ctx) {
+    public void enterInterfaceDeclaration(Java8Parser.InterfaceDeclarationContext ctx) {
         Token tk = ctx.normalInterfaceDeclaration().Identifier().getSymbol();
         if (tk != null){
             int line = tk.getLine();
@@ -61,14 +59,14 @@ public class MyListener extends CPP14BaseListener {
      * Una sola declaracion por linea
      */
     @Override
-    public void enterVariableDeclaratorList(CPP14Parser.VariableDeclaratorListContext ctx) {
+    public void enterVariableDeclaratorList(Java8Parser.VariableDeclaratorListContext ctx) {
         if (ctx.variableDeclarator().size()>1){
             System.out.printf("<Linea:%d> Se sugiere hacer una declaracion por linea \n",ctx.variableDeclarator().get(0).variableDeclaratorId().Identifier().getSymbol().getLine());
         }
     }
 
   /*@Override
-  public void enterConstantDeclaration(CPP14Parser.ConstantDeclarationContext ctx) {
+  public void enterConstantDeclaration(Java8Parser.ConstantDeclarationContext ctx) {
 
     if (ctx.variableDeclaratorList().variableDeclarator().size()>1){
       System.out.printf("<Linea:%d> Se sugiere hacer una declaracion por linea \n",ctx.variableDeclaratorList().variableDeclarator().get(0).variableDeclaratorId().Identifier().getSymbol().getLine());
@@ -88,7 +86,7 @@ public class MyListener extends CPP14BaseListener {
      * @param ctx
      */
     @Override
-    public void enterPackageDeclaration(CPP14Parser.PackageDeclarationContext ctx) {
+    public void enterPackageDeclaration(Java8Parser.PackageDeclarationContext ctx) {
         Token tk = ctx.getStop();
 
         if ( tk.getCharPositionInLine() > 100){
@@ -102,7 +100,7 @@ public class MyListener extends CPP14BaseListener {
      * @param ctx
      */
     @Override
-    public void enterPackageName(CPP14Parser.PackageNameContext ctx) {
+    public void enterPackageName(Java8Parser.PackageNameContext ctx) {
         Token tk = ctx.Identifier().getSymbol();
         if (!tk.getText().equals(tk.getText().toLowerCase())){
             System.out.printf("<%d,%d> Se sugiere cambiar el nombre del paquete por %s\n",tk.getLine(),tk.getCharPositionInLine(),tk.getText().toLowerCase());
@@ -115,7 +113,7 @@ public class MyListener extends CPP14BaseListener {
      * @param ctx
      */
     @Override
-    public void enterImportDeclaration(CPP14Parser.ImportDeclarationContext ctx) {
+    public void enterImportDeclaration(Java8Parser.ImportDeclarationContext ctx) {
         Token tk = ctx.getStop();
         if ( tk.getCharPositionInLine() > 100){
             System.out.printf("<%d> Se sugiere hacer esta linea mas corta dado que mide %d\n",tk.getLine(),tk.getCharPositionInLine());
@@ -127,7 +125,7 @@ public class MyListener extends CPP14BaseListener {
      * @param ctx
      */
     @Override
-    public void enterLocalVariableDeclarationStatement(CPP14Parser.LocalVariableDeclarationStatementContext ctx) {
+    public void enterLocalVariableDeclarationStatement(Java8Parser.LocalVariableDeclarationStatementContext ctx) {
         Token tk = ctx.getStop();
         if ( tk.getCharPositionInLine() > 100){
             System.out.printf("<%d> Se sugiere hacer esta linea mas corta dado que mide %d\n",tk.getLine(),tk.getCharPositionInLine());
@@ -141,7 +139,7 @@ public class MyListener extends CPP14BaseListener {
      * @param ctx
      */
     @Override
-    public void enterBlock(CPP14Parser.BlockContext ctx) {
+    public void enterBlock(Java8Parser.BlockContext ctx) {
         int initIdent = ctx.getStart().getCharPositionInLine();
         int initLine = ctx.getStart().getLine();
 
@@ -165,5 +163,4 @@ public class MyListener extends CPP14BaseListener {
         }
 
     }
-
 }
